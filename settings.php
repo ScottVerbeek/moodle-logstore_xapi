@@ -100,4 +100,6 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configmulticheckbox('logstore_xapi/routes',
         get_string('routes', 'logstore_xapi'), '', $menuroutes, $menuroutes));
 
+    $PAGE->requires->js_call_amd('logstore_xapi/settings', 'init');
+
 }
