@@ -37,7 +37,7 @@ function submission_duplicated(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://adlnet.gov/expapi/verbs/commented',
+            'id' => 'http://activitystrea.ms/schema/1.0/comment',
             'display' => [
                 $lang => 'commented'
             ],

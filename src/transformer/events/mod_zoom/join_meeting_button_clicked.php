@@ -37,7 +37,7 @@ function join_meeting_button_clicked(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/join',
+            'id' => 'https://xapi.org.au/sociallearningprofile/joined',
             'display' => [
                 $lang => 'joined'
             ],
