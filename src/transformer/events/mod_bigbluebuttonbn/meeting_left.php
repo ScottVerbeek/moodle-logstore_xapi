@@ -27,5 +27,5 @@ use function src\transformer\events\mod_bigbluebuttonbn\create_stmt;
  */
 function meeting_left(array $config, \stdClass $event) {
 
-    return create_stmt( $config, $event, 'http://activitystrea.ms/schema/1.0/leave', 'left' );
+    return create_stmt( $config, $event, 'https://xapi.org.au/sociallearningprofile/left', 'left' );
 }
