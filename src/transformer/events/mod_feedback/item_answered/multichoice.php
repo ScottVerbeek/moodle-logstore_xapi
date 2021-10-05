@@ -49,10 +49,10 @@ function multichoice(array $config, \stdClass $event, \stdClass $feedbackvalue, 
         ],
         'timestamp' => utils\get_event_timestamp($event),
         'result' => [
-            'response' => $selectedchoice,
+            'response' => ($selectedchoice ?:''),
             'completion' => $feedbackvalue->value !== '',
             "extensions" => [
-                "http://learninglocker.net/xapi/cmi/choice/response" => $selectedchoice,
+                "http://learninglocker.net/xapi/cmi/choice/response" => ($selectedchoice ?:''),
             ],
         ],
         'context' => [

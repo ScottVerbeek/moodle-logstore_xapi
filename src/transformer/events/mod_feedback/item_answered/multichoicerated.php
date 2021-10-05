@@ -59,11 +59,11 @@ function multichoicerated(array $config, \stdClass $event, \stdClass $feedbackva
         ],
         'timestamp' => utils\get_event_timestamp($event),
         'result' => [
-            'response' => $selectedchoice->name,
+            'response' => ($selectedchoice->name ?:''),
             'completion' => $feedbackvalue->value !== '',
             'extensions' => [
                 'http://learninglocker.net/xapi/moodle/feedback_item_rating' => $selectedchoice->rating,
-                'http://learninglocker.net/xapi/cmi/choice/response' => $selectedchoice->name,
+                'http://learninglocker.net/xapi/cmi/choice/response' => ($selectedchoice->name ?:''),
             ],
         ],
         'context' => [
