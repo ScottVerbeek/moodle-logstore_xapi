@@ -32,22 +32,22 @@ before_install:
   - nvm use 8.9
   - cd ../..
   - composer selfupdate
-  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
   - moodle-plugin-ci install
 
 script:
-# - moodle-plugin-ci phplint
-# - moodle-plugin-ci phpcpd
-# - moodle-plugin-ci phpmd
-# - moodle-plugin-ci codechecker
+  - moodle-plugin-ci phplint
+  - moodle-plugin-ci phpcpd
+  - moodle-plugin-ci phpmd
+  - moodle-plugin-ci codechecker
   - moodle-plugin-ci validate
   - moodle-plugin-ci savepoints
-# - moodle-plugin-ci mustache
-# - moodle-plugin-ci grunt
-# - moodle-plugin-ci behat
+  - moodle-plugin-ci mustache
+  - moodle-plugin-ci grunt
+  - moodle-plugin-ci behat
 
   # run codechecker without the vendor/ directory
   - rm -rf "$(find -type d -name xapi)/vendor"
