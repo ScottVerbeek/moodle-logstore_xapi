@@ -78,7 +78,7 @@ class store extends php_obj implements log_writer {
      */
     protected function insert_event_entries(array $events) {
         global $DB;
-		
+
 		//don't log any events without a definitive user id (an actor) GVM 10-02-21
 		$events = array_filter($events,function($event) { return !empty($event['userid']); });
 
@@ -109,7 +109,7 @@ class store extends php_obj implements log_writer {
             'log_error' => $logerror,
             'log_info' => $loginfo,
             'transformer' => [
-                'source_lang' => 'en',
+                'source_lang' => 'en-US',
                 'send_mbox' => $this->get_config('mbox', false),
 				'hashmbox' => $this->get_config('hashmbox', false),
                 'send_response_choices' => $this->get_config('sendresponsechoices', false),
