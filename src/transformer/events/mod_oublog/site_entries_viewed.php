@@ -41,7 +41,7 @@ function site_entries_viewed(array $config, \stdClass $event) {
                 $lang => 'viewed'
             ],
         ],
-        'object' => utils\get_activity\oublog_site_entries($config, $event->other['pageid']),
+        'object' => utils\get_activity\oublog_site_entries($config),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [
             'platform' => $config['source_name'],
