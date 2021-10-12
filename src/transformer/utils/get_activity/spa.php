@@ -71,7 +71,11 @@ function spa_category(array $config, $categoryid)
     $repo = $config['repo'];
     $xapitype = 'http://id.tincanapi.com/activitytype/category';
 
-    $category = $repo->read_record_by_id('spa_category', $categoryid);
+    try {
+        $category = $repo->read_record_by_id('spa_category', $categoryid);
+    } catch (\Exception $e) {
+        $category = null;
+    }
 
     // If the category exists in the database use it's name as instance name, otherwise just use SPA category.
     $instancename = ($category !== null) ? $category->name : 'SPA category';
