@@ -43,7 +43,7 @@ function report_viewed(array $config, \stdClass $event) {
                 $lang => 'viewed'
             ],
         ],
-        'object' => utils\get_activity\spa_report($config, $event->objectinstanceid, $unserializedcmi['report']),
+        'object' => utils\get_activity\spa_report($config, $event->contextinstanceid, $unserializedcmi['report']),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [
             'platform' => $config['source_name'],
