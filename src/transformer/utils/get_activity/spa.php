@@ -291,10 +291,14 @@ function spa_template(array $config, $templateid)
     $repo = $config['repo'];
     $xapitype = 'http://id.tincanapi.com/activitytype/source';
 
-    $instance = $repo->read_record_by_id('spa_template', $templateid);
+    try {
+        $instance = $repo->read_record_by_id('spa_template', $templateid);
+    } catch (\Exception $e) {
+        $instance = null;
+    }
 
     $templateurl = $config['app_url'].'/mod/spa/edittemplate.php?id='.$templateid;
-    $instancename = property_exists($instance, 'name') ? $instance->name : 'SPA Template';
+    $instancename = ($instance !== null) ? $instance->name : 'SPA Template';
 
     return [
         'id' => $templateurl,
