@@ -71,7 +71,11 @@ function spa_category(array $config, $categoryid)
     $repo = $config['repo'];
     $xapitype = 'http://id.tincanapi.com/activitytype/category';
 
-    $category = $repo->read_record_by_id('spa_category', $categoryid);
+    try {
+        $category = $repo->read_record_by_id('spa_category', $categoryid);
+    } catch (\Exception $e) {
+        $category = null;
+    }
 
     // If the category exists in the database use it's name as instance name, otherwise just use SPA category.
     $instancename = ($category !== null) ? $category->name : 'SPA category';
@@ -287,10 +291,14 @@ function spa_template(array $config, $templateid)
     $repo = $config['repo'];
     $xapitype = 'http://id.tincanapi.com/activitytype/source';
 
-    $instance = $repo->read_record_by_id('spa_template', $templateid);
+    try {
+        $instance = $repo->read_record_by_id('spa_template', $templateid);
+    } catch (\Exception $e) {
+        $instance = null;
+    }
 
     $templateurl = $config['app_url'].'/mod/spa/edittemplate.php?id='.$templateid;
-    $instancename = property_exists($instance, 'name') ? $instance->name : 'SPA Template';
+    $instancename = ($instance !== null) ? $instance->name : 'SPA Template';
 
     return [
         'id' => $templateurl,

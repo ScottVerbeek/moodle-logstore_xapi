@@ -172,12 +172,12 @@ function oublog_post(array $config, $postid)
  * @param int $pageid
  * @return array $object
  */
-function oublog_site_entries(array $config, $pageid)
+function oublog_site_entries(array $config)
 {
     $lang = $config['source_lang'];
     $xapitype = 'https://w3id.org/xapi/acrossx/activities/page';
 
-    $instancelisturl = $config['app_url'].'/mod/oublog/allposts.php?pageid='.$pageid;
+    $instancelisturl = $config['app_url'].'/mod/oublog/allposts.php';
     $instancename = 'oublog site entries';
 
     return [
