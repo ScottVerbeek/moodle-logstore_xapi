@@ -83,6 +83,7 @@ class admin_setting_userselection extends \admin_setting {
      * @return mixed empty string on useless data or success, error string if failed
      */
     public function write_setting($data) {
-        return ($this->config_write($this->name, implode(',', array_filter($data))) ? '' : get_string('errorsetting', 'admin'));
+        $result = $this->config_write($this->name, implode(',', array_filter(is_array($data) ? $data : [])));
+        return ($result ? '' : get_string('errorsetting', 'admin'));
     }
 }
