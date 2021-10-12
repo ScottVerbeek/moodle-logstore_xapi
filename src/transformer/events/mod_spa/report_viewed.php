@@ -33,6 +33,8 @@ function report_viewed(array $config, \stdClass $event) {
     $user = $repo->read_record_by_id('user', $event->userid);
     $lang = $config['source_lang'];
 
+    $unserializedcmi = unserialize($event->other);
+
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
@@ -41,7 +43,7 @@ function report_viewed(array $config, \stdClass $event) {
                 $lang => 'viewed'
             ],
         ],
-        'object' => utils\get_activity\spa_report($config, $event->objectinstanceid, $event->other['report']),
+        'object' => utils\get_activity\spa_report($config, $event->objectinstanceid, $unserializedcmi['report']),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [
             'platform' => $config['source_name'],

@@ -34,6 +34,8 @@ function comment_approved(array $config, \stdClass $event) {
     $course = $repo->read_record_by_id('course', $event->courseid);
     $lang = utils\get_course_lang($course);
 
+    $unserializedcmi = unserialize($event->other);
+
     return[[
         'actor' => utils\get_user($config, $user),
         'verb' => [
@@ -42,7 +44,7 @@ function comment_approved(array $config, \stdClass $event) {
                 $lang => 'approved'
             ],
         ],
-        'object' => utils\get_activity\oublog_comment($config, $event->objectid, $event->other['postid']),
+        'object' => utils\get_activity\oublog_comment($config, $event->objectid, $unserializedcmi['postid']),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [
             'platform' => $config['source_name'],

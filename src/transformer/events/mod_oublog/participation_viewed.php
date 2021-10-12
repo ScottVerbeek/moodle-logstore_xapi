@@ -34,6 +34,8 @@ function participation_viewed(array $config, \stdClass $event) {
     $course = $repo->read_record_by_id('course', $event->courseid);
     $lang = utils\get_course_lang($course);
 
+    $unserializedcmi = unserialize($event->other);
+
     return[[
         'actor' => utils\get_user($config, $user),
         'verb' => [
@@ -42,7 +44,7 @@ function participation_viewed(array $config, \stdClass $event) {
                 $lang => 'viewed'
             ],
         ],
-        'object' => utils\get_activity\oublog_participation($config, $event->other['logurl'], $event->contextinstanceid),
+        'object' => utils\get_activity\oublog_participation($config, $unserializedcmi['logurl'], $event->contextinstanceid),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [
             'platform' => $config['source_name'],
