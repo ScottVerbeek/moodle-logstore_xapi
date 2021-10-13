@@ -36,7 +36,7 @@ function category_created(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/create',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/created',
             'display' => [
                 $lang => 'created'
             ],

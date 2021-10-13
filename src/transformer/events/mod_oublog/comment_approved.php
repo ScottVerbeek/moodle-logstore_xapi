@@ -39,7 +39,7 @@ function comment_approved(array $config, \stdClass $event) {
     return[[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/approve',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/assigned',
             'display' => [
                 $lang => 'approved'
             ],

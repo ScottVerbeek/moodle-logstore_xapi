@@ -37,7 +37,7 @@ function submission_duplicated(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/comment',
+            'id' => 'http://adlnet.gov/expapi/verbs/commented',
             'display' => [
                 $lang => 'commented'
             ],
@@ -56,7 +56,7 @@ function submission_duplicated(array $config, \stdClass $event) {
                         $config,
                         $course,
                         $event->contextinstanceid,
-                        'http://id.tincanapi.com/activitytype/survey')
+                        'https://xapi.org.au/contentprofile/activitytype/survey')
                 ],
                 'category' => [
                     utils\get_activity\source($config),

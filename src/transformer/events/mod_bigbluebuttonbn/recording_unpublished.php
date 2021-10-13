@@ -27,5 +27,5 @@ use function src\transformer\events\mod_bigbluebuttonbn\create_stmt;
  */
 function recording_unpublished(array $config, \stdClass $event) {
 
-    return create_stmt( $config, $event, 'http://activitystrea.ms/schema/1.0/retract', 'retracted' );
+    return create_stmt( $config, $event, 'https://xapi.org.au/contentprofile/verb/withdrew', 'retracted' );
 }

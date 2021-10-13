@@ -56,7 +56,7 @@ function submissioninpdf_downloaded(array $config, \stdClass $event) {
                         $config,
                         $course,
                         $event->contextinstanceid,
-                        'http://id.tincanapi.com/activitytype/survey')
+                        'https://xapi.org.au/contentprofile/activitytype/survey')
                 ],
                 'category' => [
                     utils\get_activity\source($config),

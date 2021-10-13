@@ -36,7 +36,7 @@ function template_questions_added(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'https://brindlewaye.com/xAPITerms/verbs/added/',
+            'id' => 'https://xapi.org.au/contentprofile/verb/added/',
             'display' => [
                 $lang => 'added'
             ],

@@ -32,7 +32,7 @@ function attempt_started(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/start',
+            'id' => 'https://xapi.org.au/contentprofile/verb/commenced',
             'display' => [
                 $lang => 'started'
             ],

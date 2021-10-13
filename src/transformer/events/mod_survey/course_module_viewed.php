@@ -38,7 +38,7 @@ function course_module_viewed(array $config, \stdClass $event) {
             $config,
             $course,
             $event->contextinstanceid,
-            'http://id.tincanapi.com/activitytype/survey'
+            'https://xapi.org.au/contentprofile/activitytype/survey'
         ),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [

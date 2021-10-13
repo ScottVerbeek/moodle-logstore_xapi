@@ -24,6 +24,6 @@ function course_feedback(array $config, \stdClass $course, $cmid) {
         $config,
         $course,
         $cmid,
-        'http://id.tincanapi.com/activitytype/survey'
+        'https://xapi.org.au/contentprofile/activitytype/survey'
     );
 }

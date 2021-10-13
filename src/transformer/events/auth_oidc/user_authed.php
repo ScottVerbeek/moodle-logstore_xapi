@@ -36,7 +36,7 @@ function user_authed(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/authenticate',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/authenticated',
             'display' => [
                 $lang => 'authenticated'
             ],
