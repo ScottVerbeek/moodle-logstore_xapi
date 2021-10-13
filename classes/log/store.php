@@ -109,7 +109,7 @@ class store extends php_obj implements log_writer {
             'log_error' => $logerror,
             'log_info' => $loginfo,
             'transformer' => [
-                'source_lang' => 'en-US',
+                'source_lang' => 'en-AU',
                 'send_mbox' => $this->get_config('mbox', false),
 				'hashmbox' => $this->get_config('hashmbox', false),
                 'send_response_choices' => $this->get_config('sendresponsechoices', false),
