@@ -38,7 +38,7 @@ function template_questions_moved(array $config, \stdClass $event) {
         'verb' => [
             'id' => 'https://w3id.org/xapi/dod-isd/verbs/updated',
             'display' => [
-                $lang => 'moved'
+                $lang => 'updated'
             ],
         ],
         'object' => utils\get_activity\spa_template_questions($config, $event->objectid),
