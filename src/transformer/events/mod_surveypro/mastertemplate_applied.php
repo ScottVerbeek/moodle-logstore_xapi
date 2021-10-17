@@ -37,9 +37,9 @@ function mastertemplate_applied(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://id.tincanapi.com/verb/viewed',
+            'id' => 'https://xapi.org.au/contentprofile/verb/added/',
             'display' => [
-                $lang => 'applied'
+                $lang => 'added'
             ],
         ],
         'object' => utils\get_activity\surveypro($config, $event->contextinstanceid),
