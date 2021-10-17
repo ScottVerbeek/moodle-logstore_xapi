@@ -72,10 +72,13 @@ function oublog_comment(array $config, $commentid, $postid)
     $repo = $config['repo'];
     $xapitype = 'http://adlnet.gov/expapi/verbs/commented';
 
-    $instance = $repo->read_record_by_id('oublog_comments', $commentid);
-
+    try {
+        $instance = $repo->read_record_by_id('oublog_comments', $commentid);
+    } catch (\Exception $e) {
+        $instance = null;
+    }
     $instancelisturl = $config['app_url'].'/mod/oublog/viewpost.php?post='.$postid;
-    if(property_exists($instance, 'title') && trim($instance->title) !== '') {
+    if($instance !== null && property_exists($instance, 'title') && trim($instance->title) !== '') {
         $instancename = $instance->title;
     } else {
         $instancename = 'oublog comment';
