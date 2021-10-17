@@ -362,7 +362,7 @@ function spa_group_override(array $config, $overrideid)
 function spa_review(array $config, $cmid, $relateduserid)
 {
     $lang = $config['source_lang'];
-    $xapitype = 'https://id.tincanapi.com/verb/reviewed';
+    $xapitype = 'http://activitystrea.ms/schema/1.0/review';
 
     $templateurl = $config['app_url'].'/mod/spa/review.php?cmid='.$cmid.'&userid='.$relateduserid;
 
