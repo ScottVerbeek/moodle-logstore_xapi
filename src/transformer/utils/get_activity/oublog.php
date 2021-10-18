@@ -70,7 +70,7 @@ function oublog_comment(array $config, $commentid, $postid)
 {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://adlnet.gov/expapi/verbs/commented';
+    $xapitype = 'http://activitystrea.ms/schema/1.0/comment';
 
     try {
         $instance = $repo->read_record_by_id('oublog_comments', $commentid);
