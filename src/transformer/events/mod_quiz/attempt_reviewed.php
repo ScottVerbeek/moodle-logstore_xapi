@@ -33,7 +33,7 @@ function attempt_reviewed(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $learner),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/receive',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/received',
             'display' => [
                 $lang => 'received'
             ],
@@ -41,7 +41,7 @@ function attempt_reviewed(array $config, \stdClass $event) {
         'object' => [
             'id' => $config['app_url'].'/review.php?attempt='.$attempt->id,
             'definition' => [
-                'type' => 'http://activitystrea.ms/schema/1.0/review',
+                'type' => 'https://id.tincanapi.com/verb/reviewed',
                 'name' => [
                     $lang => 'review'
                 ]

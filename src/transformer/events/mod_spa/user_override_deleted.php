@@ -36,7 +36,7 @@ function user_override_deleted(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/delete',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/deleted',
             'display' => [
                 $lang => 'deleted'
             ],

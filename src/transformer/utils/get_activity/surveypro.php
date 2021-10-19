@@ -29,7 +29,7 @@ use src\transformer\utils as utils;
 function surveypro(array $config, $cmid) {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://id.tincanapi.com/activitytype/survey';
+    $xapitype = 'https://xapi.org.au/contentprofile/activitytype/survey';
 
     $coursemodule = $repo->read_record_by_id('course_modules', $cmid);
     $module = $repo->read_record_by_id('modules', $coursemodule->module);
@@ -68,7 +68,7 @@ function surveypro(array $config, $cmid) {
 function surveypro_item(array $config, $itemid, $cmid) {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://id.tincanapi.com/activitytype/survey';
+    $xapitype = 'https://xapi.org.au/contentprofile/activitytype/survey';
 
     // If the item doesn't exist return parent object.
     try {
@@ -106,7 +106,7 @@ function surveypro_item(array $config, $itemid, $cmid) {
 function surveypro_submission($config, $submissionid, $cmid) {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/comment';
+    $xapitype = 'http://adlnet.gov/expapi/verbs/commented';
 
     // If the submission doesn't exist return parent object.
     try {

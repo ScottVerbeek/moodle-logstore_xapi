@@ -29,7 +29,7 @@ use src\transformer\utils as utils;
 function choicegroup(array $config, $cmid) {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/question';
+    $xapitype = 'http://adlnet.gov/expapi/activities/question';
 
     $coursemodule = $repo->read_record_by_id('course_modules', $cmid);
     $module = $repo->read_record_by_id('modules', $coursemodule->module);
@@ -67,7 +67,7 @@ function choicegroup(array $config, $cmid) {
 function choicegroup_instance_list(array $config, $courseid)
 {
     $lang = $config['source_lang'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/collection';
+    $xapitype = 'https://xapi.org.au/contentprofile/activitytype/collection';
 
     $instancelisturl = $config['app_url'].'/mod/choicegroup/index.php?id='.$courseid;
     $instancename = 'choicegroup';

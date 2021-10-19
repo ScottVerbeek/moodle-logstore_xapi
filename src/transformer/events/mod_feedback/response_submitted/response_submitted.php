@@ -31,7 +31,7 @@ function response_submitted(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/submit',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/submitted',
             'display' => [
                 $lang => 'submitted'
             ],

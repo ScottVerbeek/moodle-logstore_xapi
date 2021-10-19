@@ -70,12 +70,15 @@ function oublog_comment(array $config, $commentid, $postid)
 {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/comment';
+    $xapitype = 'http://id.tincanapi.com/activitytype/forum-reply';
 
-    $instance = $repo->read_record_by_id('oublog_comments', $commentid);
-
+    try {
+        $instance = $repo->read_record_by_id('oublog_comments', $commentid);
+    } catch (\Exception $e) {
+        $instance = null;
+    }
     $instancelisturl = $config['app_url'].'/mod/oublog/viewpost.php?post='.$postid;
-    if(property_exists($instance, 'title') && trim($instance->title) !== '') {
+    if($instance !== null && property_exists($instance, 'title') && trim($instance->title) !== '') {
         $instancename = $instance->title;
     } else {
         $instancename = 'oublog comment';
@@ -90,8 +93,7 @@ function oublog_comment(array $config, $commentid, $postid)
             'name' => [
                 $lang => $instancename,
             ],
-        ],
-        'inReplyTo' => array(oublog_post($config, $postid)),
+        ]
     ];
 }
 

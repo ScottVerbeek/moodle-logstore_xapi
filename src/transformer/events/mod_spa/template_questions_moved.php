@@ -36,9 +36,9 @@ function template_questions_moved(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/update',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/updated',
             'display' => [
-                $lang => 'moved'
+                $lang => 'updated'
             ],
         ],
         'object' => utils\get_activity\spa_template_questions($config, $event->objectid),

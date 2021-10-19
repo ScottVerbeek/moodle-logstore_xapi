@@ -36,7 +36,7 @@ function template_questions_removed(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/remove',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/removed ',
             'display' => [
                 $lang => 'removed'
             ],

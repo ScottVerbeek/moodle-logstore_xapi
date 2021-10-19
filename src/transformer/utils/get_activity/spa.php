@@ -30,7 +30,7 @@ function spa(array $config, $cmid)
 {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/review';
+    $xapitype = 'https://id.tincanapi.com/verb/reviewed';
 
     $coursemodule = $repo->read_record_by_id('course_modules', $cmid);
     $module = $repo->read_record_by_id('modules', $coursemodule->module);
@@ -145,7 +145,7 @@ function spa_question(array $config, $questionid)
 {
     $lang = $config['source_lang'];
     $repo = $config['repo'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/question';
+    $xapitype = 'http://adlnet.gov/expapi/activities/question';
 
     $question = $repo->read_record_by_id('spa_question', $questionid);
 
@@ -236,7 +236,7 @@ function spa_submission(array $config, $cmid, $relateduserid)
 function spa_teacher_feedback(array $config, $cmid, $relateduserid)
 {
     $lang = $config['source_lang'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/review';
+    $xapitype = 'https://id.tincanapi.com/verb/reviewed';
 
     $feedbackurl = $config['app_url'].'/mod/spa/editfeedback.php?cmid='.$cmid.'&userid='.$relateduserid;
 
@@ -262,7 +262,7 @@ function spa_teacher_feedback(array $config, $cmid, $relateduserid)
 function spa_teacher_feedback_viewed(array $config, $cmid)
 {
     $lang = $config['source_lang'];
-    $xapitype = 'http://activitystrea.ms/schema/1.0/review';
+    $xapitype = 'https://id.tincanapi.com/verb/reviewed';
 
     $feedbackurl = $config['app_url'].'/mod/spa/feedback.php?cmid='.$cmid;
 

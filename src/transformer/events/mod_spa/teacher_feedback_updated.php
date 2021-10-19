@@ -36,7 +36,7 @@ function teacher_feedback_updated(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/update',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/updated',
             'display' => [
                 $lang => 'updated'
             ],

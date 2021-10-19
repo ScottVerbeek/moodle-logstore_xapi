@@ -37,7 +37,7 @@ function usertemplate_saved(array $config, \stdClass $event) {
     return [[
         'actor' => utils\get_user($config, $user),
         'verb' => [
-            'id' => 'http://activitystrea.ms/schema/1.0/save',
+            'id' => 'https://w3id.org/xapi/dod-isd/verbs/saved',
             'display' => [
                 $lang => 'saved'
             ],
