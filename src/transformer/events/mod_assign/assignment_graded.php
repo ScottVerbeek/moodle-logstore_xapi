@@ -103,7 +103,7 @@ function assignment_graded(array $config, \stdClass $event) {
     }
     // Calculate scaled score as the distance from zero towards the max (or min for negative scores).
     if ($scoreraw >= 0) {
-        $statement['result']['score']['scaled'] = $scoreraw / $scoremax;
+        $statement['result']['score']['scaled'] = (float) ($scoreraw / $scoremax);
     }
 
     return [$statement];
