@@ -103,7 +103,18 @@ function assignment_graded(array $config, \stdClass $event) {
     }
     // Calculate scaled score as the distance from zero towards the max (or min for negative scores).
     if ($scoreraw >= 0) {
-        $statement['result']['score']['scaled'] = $scoreraw / $scoremax;
+        $scorescaled = $scoreraw / $scoremax;
+        if ($scorescaled < -1 || $scorescaled > 1 ) {
+            // If score scaled is outside -1 and 1 then use the final grade.
+            GLOBAL $CFG;
+            require_once($CFG->libdir.'/gradelib.php');
+            $gradinginfo = grade_get_grades($event->courseid, 'mod', 'assign', $assignment->id, $event->relateduserid);
+            if (isset($gradinginfo->items[0]) && $gradinginfo->items[0]->grades[$event->relateduserid]) {
+                $scorescaled = $gradinginfo->items[0]->grades[$event->relateduserid]->grade / $scoremax;
+            }
+        }
+
+        $statement['result']['score']['scaled'] = $scorescaled;
     }
 
     return [$statement];
