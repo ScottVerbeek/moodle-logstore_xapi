@@ -52,7 +52,7 @@ function get_verb(string $verb, array $config, string $lang) {
 
         case 'loggedin':
             $output = [
-                'id' => 'https://brindlewaye.com/xAPITerms/verbs/loggedin/',
+                'id' => 'https://w3id.org/xapi/adl/verbs/logged-in',
                 'display' => [
                     $lang => 'logged into'
                 ]
@@ -60,13 +60,13 @@ function get_verb(string $verb, array $config, string $lang) {
 
             // JISC specific verb id.
             if (utils\is_enabled_config($config, 'send_jisc_data')) {
-                $output['id'] = 'https://brindlewaye.com/xAPITerms/verbs/loggedin';
+                $output['id'] = 'https://w3id.org/xapi/adl/verbs/logged-in';
             }
             break;
 
         case 'loggedout':
             $output = [
-                'id' => 'https://brindlewaye.com/xAPITerms/verbs/loggedout/',
+                'id' => 'https://w3id.org/xapi/adl/verbs/logged-out',
                 'display' => [
                     $lang => 'logged out of'
                 ],
@@ -74,13 +74,13 @@ function get_verb(string $verb, array $config, string $lang) {
 
             // JISC specific verb id.
             if (utils\is_enabled_config($config, 'send_jisc_data')) {
-                $output['id'] = 'https://brindlewaye.com/xAPITerms/verbs/loggedout';
+                $output['id'] = 'https://w3id.org/xapi/adl/verbs/logged-out';
             }
             break;
 
         case 'received':
             $output = [
-                'id' => 'http://activitystrea.ms/schema/1.0/receive',
+                'id' => 'https://w3id.org/xapi/dod-isd/verbs/received',
                 'display' => [
                     $lang => 'received'
                 ],
@@ -98,7 +98,7 @@ function get_verb(string $verb, array $config, string $lang) {
 
         case 'started':
             $output = [
-                'id' => 'http://activitystrea.ms/schema/1.0/start',
+                'id' => 'https://xapi.org.au/contentprofile/verb/commenced',
                 'display' => [
                     $lang => 'started'
                 ],
@@ -107,7 +107,7 @@ function get_verb(string $verb, array $config, string $lang) {
 
         case 'submitted':
             $output = [
-                'id' => 'http://activitystrea.ms/schema/1.0/submit',
+                'id' => 'https://w3id.org/xapi/dod-isd/verbs/submitted',
                 'display' => [
                     $lang => 'submitted'
                 ],

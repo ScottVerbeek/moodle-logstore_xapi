@@ -48,7 +48,7 @@ function attempt_reviewed(array $config, \stdClass $event) {
     $object = [
         'id' => $config['app_url'] . '/review.php?attempt=' . $attempt->id,
         'definition' => [
-            'type' => 'http://activitystrea.ms/schema/1.0/review',
+            'type' => 'https://id.tincanapi.com/verb/reviewed',
             'name' => [
                 $lang => 'review'
             ]
