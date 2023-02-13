@@ -14,12 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\events\mod_feedback\item_answered;
+/**
+ * Generic feedback handler for transforming feedback events.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace src\transformer\events\mod_feedback\item_answered;
 
 use src\transformer\utils as utils;
 
+/**
+ * Generic handler for the mod_feedback item answered event.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @param \stdClass $feedbackvalue The value of the feedback type.
+ * @return array
+ */
 function handler(array $config, \stdClass $event, \stdClass $feedbackvalue) {
     $repo = $config['repo'];
     $feedbackitem = $repo->read_record_by_id('feedback_item', $feedbackvalue->item);

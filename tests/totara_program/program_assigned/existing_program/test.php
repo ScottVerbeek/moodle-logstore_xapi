@@ -14,10 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace tests\totara_program\program_assigned\existing_program;
-defined('MOODLE_INTERNAL') || die();
+namespace logstore_xapi\totara_program\program_assigned\existing_program;
 
-class test extends \tests\xapi_test_case {
+/**
+ * Unit test for totara_program event.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class test extends \logstore_xapi\xapi_test_case {
+
+    /**
+     * Retrieve the directory of the unit test.
+     *
+     * @return string
+     */
     protected function get_test_dir() {
         return __DIR__;
     }

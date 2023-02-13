@@ -14,12 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\events\core;
+/**
+ * Transform for user logged out event.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace src\transformer\events\core;
 
 use src\transformer\utils as utils;
 
+/**
+ * Transformer for the user logged out event.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @return array
+ */
 function user_loggedout(array $config, \stdClass $event) {
     $repo = $config['repo'];
     $user = $repo->read_record_by_id('user', $event->userid);
@@ -27,12 +42,7 @@ function user_loggedout(array $config, \stdClass $event) {
 
     return [[
         'actor' => utils\get_user($config, $user),
-        'verb' => [
-            'id' => 'https://w3id.org/xapi/adl/verbs/logged-out',
-            'display' => [
-                $lang => 'logged out of'
-            ],
-        ],
+        'verb' => utils\get_verb('loggedout', $config, $lang),
         'object' => utils\get_activity\site($config),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [

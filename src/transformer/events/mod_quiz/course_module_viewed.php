@@ -14,12 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\events\mod_quiz;
+/**
+ * Transform for the quiz viewed event.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace src\transformer\events\mod_quiz;
 
 use src\transformer\utils as utils;
 
+/**
+ * Transformer for quiz module viewed event.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @return array
+ */
 function course_module_viewed(array $config, \stdClass $event) {
     $repo = $config['repo'];
     $user = $repo->read_record_by_id('user', $event->userid);
@@ -28,12 +43,7 @@ function course_module_viewed(array $config, \stdClass $event) {
 
     return [[
         'actor' => utils\get_user($config, $user),
-        'verb' => [
-            'id' => 'http://id.tincanapi.com/verb/viewed',
-            'display' => [
-                $lang => 'viewed'
-            ],
-        ],
+        'verb' => utils\get_verb('viewed', $config, $lang),
         'object' => utils\get_activity\course_quiz($config, $course, $event->contextinstanceid),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [

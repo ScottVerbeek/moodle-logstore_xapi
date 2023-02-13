@@ -14,12 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\events\mod_quiz\question_answered;
+/**
+ * Generic quiz handler for the question answered event.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace src\transformer\events\mod_quiz\question_answered;
 
 use src\transformer\utils as utils;
 
+/**
+ * Generic handler for quiz question answered event.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @param \stdClass $questionattempt The questionattempt object.
+ * @return array
+ */
 function handler(array $config, \stdClass $event, \stdClass $questionattempt) {
     $repo = $config['repo'];
     $question = $repo->read_record_by_id('question', $questionattempt->questionid);
@@ -36,7 +52,7 @@ function handler(array $config, \stdClass $event, \stdClass $questionattempt) {
         case 'shortanswer':
             return shortanswer($config, $event, $questionattempt, $question);
         case 'match':
-            return match($config, $event, $questionattempt, $question);
+            return matching($config, $event, $questionattempt, $question);
         case 'multichoice':
         case 'multichoiceset':
             return multichoice($config, $event, $questionattempt, $question);

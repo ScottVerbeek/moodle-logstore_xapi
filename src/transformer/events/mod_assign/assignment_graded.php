@@ -14,12 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\events\mod_assign;
+/**
+ * Transform for assignment graded event.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace src\transformer\events\mod_assign;
 
 use src\transformer\utils as utils;
 
+/**
+ * Transformer for the assignment graded event.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @return array
+ */
 function assignment_graded(array $config, \stdClass $event) {
     $repo = $config['repo'];
     $grade = $repo->read_record_by_id($event->objecttable, $event->objectid);
@@ -57,12 +72,7 @@ function assignment_graded(array $config, \stdClass $event) {
 
     $statement = [
         'actor' => utils\get_user($config, $user),
-        'verb' => [
-            'id' => 'http://adlnet.gov/expapi/verbs/scored',
-            'display' => [
-                $lang => 'attained grade for'
-            ],
-        ],
+        'verb' => utils\get_verb('scored', $config, $lang),
         'object' => utils\get_activity\course_assignment($config, $event->contextinstanceid, $assignment->name, $lang),
         'result' => [
             'score' => [

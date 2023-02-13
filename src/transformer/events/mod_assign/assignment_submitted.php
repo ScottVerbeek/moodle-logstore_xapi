@@ -14,12 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\events\mod_assign;
+/**
+ * Transform for assignment submitted event.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace src\transformer\events\mod_assign;
 
 use src\transformer\utils as utils;
 
+/**
+ * Transformer for the assignment submitted event.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @return array
+ */
 function assignment_submitted(array $config, \stdClass $event) {
     $repo = $config['repo'];
     $user = $repo->read_record_by_id('user', $event->userid);
@@ -28,14 +43,15 @@ function assignment_submitted(array $config, \stdClass $event) {
     $assignment = $repo->read_record_by_id('assign', $assignmentsubmission->assignment);
     $lang = utils\get_course_lang($course);
 
+    $verb = utils\get_verb('submitted', $config, $lang);
+
+    if (utils\is_enabled_config($config, 'send_jisc_data')) {
+        $verb = utils\get_verb('completed', $config, $lang);
+    }
+
     return [[
         'actor' => utils\get_user($config, $user),
-        'verb' => [
-            'id' => 'https://w3id.org/xapi/dod-isd/verbs/submitted',
-            'display' => [
-                $lang => 'submitted'
-            ],
-        ],
+        'verb' => $verb,
         'object' => utils\get_activity\course_assignment($config, $event->contextinstanceid, $assignment->name, $lang),
         'timestamp' => utils\get_event_timestamp($event),
         'context' => [

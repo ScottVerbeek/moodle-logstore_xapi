@@ -14,12 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\utils\extensions;
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Transformer utility for base xAPI extensions.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
+namespace src\transformer\utils\extensions;
+
+use src\transformer\utils as utils;
+
+/**
+ * Transformer utility for base xAPI extensions.
+ *
+ * @param array $config The transformer config settings.
+ * @param \stdClass $event The event to be transformed.
+ * @param object $course The course object.
+ * @return array
+ */
 function base(array $config, \stdClass $event, $course=null) {
-    return array_merge(
-        info($config, $event),
-        jisc($config, $event, $course)
-    );
+    $base = utils\extensions\info($config, $event);
+
+    if (utils\is_enabled_config($config, 'send_jisc_data')) {
+        $base = array_merge($base, utils\extensions\jisc($config, $event, $course));
+    }
+
+    return $base;
 }

@@ -14,9 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace src\transformer\utils;
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Transformer utility for retrieving the quiz question id.
+ *
+ * @package   logstore_xapi
+ * @copyright Jerret Fowler <jerrett.fowler@gmail.com>
+ *            Ryan Smith <https://www.linkedin.com/in/ryan-smith-uk/>
+ *            David Pesce <david.pesce@exputo.com>
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-function get_quiz_question_id(array $config, $coursemoduleid, $questionid) {
+namespace src\transformer\utils;
+
+/**
+ * Transformer utility for retrieving the quiz question id.
+ *
+ * @param array $config The transformer config settings.
+ * @param string $coursemoduleid The id of the course module.
+ * @param string $questionid The question id.
+ * @return object
+ */
+function get_quiz_question_id(array $config, string $coursemoduleid, string $questionid) {
     return $config['app_url'].'/question/question.php?cmid='.$coursemoduleid.'&id='.$questionid;
 }
