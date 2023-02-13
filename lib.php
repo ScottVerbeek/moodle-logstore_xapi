@@ -307,7 +307,7 @@ function logstore_xapi_extract_events($limitnum, $log, $type) {
     global $DB;
 
     $conditions = array("type" => $type);
-    $sort = '';
+    $sort = 'id DESC';
     $fields = '*';
     $limitfrom = 0;
 
