@@ -51,29 +51,32 @@ function load(array $config, array $events) {
 
         $url = utils\correct_endpoint($endpoint).'/statements';
         $auth = base64_encode($username.':'.$password);
-		
-		//don't send empty statement arrays GVM 25-01-21
+
+        //don't send empty statement arrays GVM 25-01-21
+        // OS-1095: Raise a exception since it should be logged as a failed event.
         if(count($statements) > 0) {
-			$postdata = json_encode($statements);
+            throw new \Exception('The given $statements array is empty.');
+        }
 
-			if ($postdata === false) {
-				throw new \Exception('JSON encode error: '.json_last_error_msg());
-			}
+        $postdata = json_encode($statements);
 
-			$request = new \curl();
-			$responsetext = $request->post($url, $postdata, [
-				'CURLOPT_HTTPHEADER' => [
-					'Authorization: Basic '.$auth,
-					'X-Experience-API-Version: 1.0.0',
-					'Content-Type: application/json',
-				],
-			]);
-			$responsecode = $request->info['http_code'];
+        if ($postdata === false) {
+            throw new \Exception('JSON encode error: '.json_last_error_msg());
+        }
 
-			if ($responsecode !== 200) {
-				throw new \Exception($responsetext, $responsecode);
-			}
-		}
+        $request = new \curl();
+        $responsetext = $request->post($url, $postdata, [
+            'CURLOPT_HTTPHEADER' => [
+                'Authorization: Basic '.$auth,
+                'X-Experience-API-Version: 1.0.0',
+                'Content-Type: application/json',
+            ],
+        ]);
+        $responsecode = $request->info['http_code'];
+
+        if ($responsecode !== 200) {
+            throw new \Exception($responsetext, $responsecode);
+        }
     };
     return utils\load_in_batches($config, $events, $sendhttpstatements);
 }
