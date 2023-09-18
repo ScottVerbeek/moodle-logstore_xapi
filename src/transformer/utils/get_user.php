@@ -51,7 +51,7 @@ function get_user(array $config, \stdClass $user) {
 
     if (array_key_exists('send_mbox', $config) && $config['send_mbox'] == true && $hasvalidemail) {
 
-        $toReturn['objectType'] = ['Agent'];
+        $toReturn['objectType'] = 'Agent';
 
 		if(array_key_exists('hashmbox', $config) && $config['hashmbox'] == true) {
 			$toReturn['mbox_sha1sum'] = sha1('mailto:' . $user->email);
