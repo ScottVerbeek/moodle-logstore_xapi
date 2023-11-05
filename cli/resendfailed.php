@@ -131,7 +131,8 @@ $where = implode(' AND ', $where);
 
 $sql = "SELECT x.id
           FROM {{$basetable}} x
-         WHERE $where";
+         WHERE $where
+      ORDER BY x.id";
 
 $limitfrom = 0;
 $limitnum = $options['batch'];
@@ -140,21 +141,22 @@ $countsucc = 0;
 $countfail = 0;
 
 do {
+    cli_write("Reading at offset {$limitfrom} ...");
     $records = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     $count = count($records);
-    $limitfrom += $count;
     $counttotal += $count;
-    cli_writeln("Read {$count} records, next offset will be {$limitfrom}");
+    cli_writeln(" read {$count} records.");
 
     $eventids = array_keys($records);
 
     if (empty($eventids)) {
-        continue;
+        break;
     }
 
     $mover = new \logstore_xapi\log\moveback($eventids, XAPI_REPORT_ID_ERROR);
 
     if ($options['dryrun']) {
+        $limitfrom += $count;
         continue;
     }
 
@@ -162,6 +164,7 @@ do {
         $countsucc += $count;
         cli_writeln("$count events successfully sent for reprocessing.");
     } else {
+        $limitfrom += $count; // Increase the offset, when failed to move.
         $countfail += $count;
         cli_writeln("$count events failed to send for reprocessing.");
     }
