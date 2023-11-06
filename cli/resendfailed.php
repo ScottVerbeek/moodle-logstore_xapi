@@ -43,6 +43,7 @@ Options:
     --datefrom=<integer>      Epoch from date to resend, default: null.
     --dateto=<integer>        Epoch to date to resend, default: null.
     --batch=<integer>         The batch size of each move iteration, default: 12500.
+    --runtime=<integer>       The maximum amount of time this program can run in seconds, default: 300.
     --dryrun=<integer>        Runs the program without executing any write queries, default: 1.
     -h --help                 Print this help.
 ";
@@ -54,6 +55,7 @@ list($options, $unrecognised) = cli_get_params([
     'datefrom' => null,
     'dateto' => null,
     'dryrun' => true,
+    'runtime' => 300,
     'batch' => 12500,
 ], [
     'h' => 'help'
@@ -80,6 +82,10 @@ if ($options['dryrun']) {
     cli_write('NOTICE: The program is running in dryrun mode, no write queries will be executed. ');
     cli_write('To disable dryrun mode, add option --dryrun=0' . PHP_EOL);
 }
+
+$options['runtime'] = intval($options['runtime']);
+cli_writeln("Program will stop after {$options['runtime']} seconds have passed, started at " .date('Y-m-d H:i:s T') . "...");
+$starttime = microtime(true);
 
 $options['batch'] = intval($options['batch']);
 cli_writeln("Program will run in batches of {$options['batch']} records ...");
@@ -141,6 +147,11 @@ $countsucc = 0;
 $countfail = 0;
 
 do {
+    if (microtime(true) - $starttime >= $options['runtime']) {
+        cli_writeln("Stopping the program, the maximum runtime has been exceeded ({$options['runtime']} seconds).");
+        break; // Exit the loop after the specified runtime
+    }
+
     cli_write("Reading at offset {$limitfrom} ...");
     $records = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     $count = count($records);
@@ -162,11 +173,11 @@ do {
 
     if ($mover->execute()) {
         $countsucc += $count;
-        cli_writeln("$count events successfully sent for reprocessing.");
+        cli_writeln("$count events successfully sent for reprocessing. Not increasing the offset (records were moved).");
     } else {
         $limitfrom += $count; // Increase the offset, when failed to move.
         $countfail += $count;
-        cli_writeln("$count events failed to send for reprocessing.");
+        cli_writeln("$count events failed to send for reprocessing. Increasing the offset by {$count} (records were not moved).");
     }
 } while ($count > 0);
 
