@@ -44,10 +44,6 @@ $page         = optional_param('page', XAPI_REPORT_STARTING_PAGE, PARAM_INT);
 $perpage      = optional_param('perpage', XAPI_REPORT_PERPAGE_DEFAULT, PARAM_INT);
 $onpage       = optional_param('onpage', XAPI_REPORT_ONPAGE_DEFAULT, PARAM_TEXT);
 
-if ($id == XAPI_REPORT_ID_ERROR) {
-    $run = true;
-}
-
 // Set pagination url's parameter.
 $urlparams = array(
     'id' => $id,
@@ -103,7 +99,11 @@ $canmanage = false;
 switch ($id) {
     case XAPI_REPORT_ID_ERROR:
         $filterparams['errortypes'] = logstore_xapi_get_distinct_options_from_failed_table('errortype');
-        $filterparams['responses'] = logstore_xapi_get_distinct_options_from_failed_table('response');
+        if ($run)  {
+            $filterparams['responses'] = logstore_xapi_get_distinct_options_from_failed_table('response');
+        } else {
+            $filterparams['responses'] = [];
+        }
 
         require_capability('logstore/xapi:viewerrorlog', $systemcontext);
 
@@ -229,12 +229,7 @@ if ($run) {
     // Collect events to create view.
     $results = $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
 
-    $sql = "SELECT COUNT(x.id)
-          FROM {{$basetable}} x
-     LEFT JOIN {user} u
-            ON u.id = x.userid
-         WHERE $where";
-    $count = $DB->count_records_sql($sql, $params);
+    $count = count($results);
 } else {
     // No results will be showing so count is 0.
     $count = 0;
