@@ -19,7 +19,7 @@ namespace logstore_xapi\task;
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/lib.php');
 
 /**
- * Schedules a adhoc task resendadhoc.
+ * Moves once failed statements back to the queue, ready to resend.
  *
  * @package   logstore_xapi
  * @copyright Scott Verbeek <scottverbeek@catalyst-au.net>
@@ -37,7 +37,7 @@ class resend_task extends \core\task\scheduled_task {
     }
 
     /**
-     * List a adhoc task that will resend the items.
+     * Do the task, moving once failed statements based upon a configured scope.
      */
     public function execute() {
         global $DB;
