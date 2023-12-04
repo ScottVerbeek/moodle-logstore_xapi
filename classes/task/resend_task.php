@@ -42,16 +42,110 @@ class resend_task extends \core\task\scheduled_task {
     public function execute() {
         global $DB;
 
-        $errortype = (string) get_config('logstore_xapi', 'resendtaskerrortype');
-        $eventname = (string) get_config('logstore_xapi', 'resendeventname');
-        $datefrom = (int) get_config('logstore_xapi', 'resenddatefrom');
-        $dateto = (int) get_config('logstore_xapi', 'resenddateto');
-        $runtime = (int) get_config('logstore_xapi', 'resendtaskruntime');
-        $batch = (int) get_config('logstore_xapi', 'resendbatch');
+        $settings = new \stdClass();
+        $settings->errortype = (string) get_config('logstore_xapi', 'resendtaskerrortype');
+        $settings->eventname = (string) get_config('logstore_xapi', 'resendeventname');
+        $settings->datefrom = (int) get_config('logstore_xapi', 'resenddatefrom');
+        $settings->dateto = (int) get_config('logstore_xapi', 'resenddateto');
+        $settings->runtime = (int) get_config('logstore_xapi', 'resendtaskruntime');
+        $settings->batch = (int) get_config('logstore_xapi', 'resendbatch');
 
-        $task = \logstore_xapi\task\resendadhoc_task::instance($errortype, $eventname, $datefrom, $dateto, $runtime, $batch);
-        \core\task\manager::queue_adhoc_task($task);
+        $basetable = XAPI_REPORT_SOURCE_FAILED;
+        $params = [];
+        $where = [];
 
-        mtrace("Queued a new adhoc task \logstore_xapi\task\resendadhoc_task with configuration ... " . $task->get_custom_data_as_string());
+        // Start of sanitization, and applying of scope.
+        mtrace("Task will stop after {$settings->runtime} seconds have passed, started at " .date('Y-m-d H:i:s T') . "...");
+        $starttime = microtime(true);
+
+        mtrace("Task will run in batches of {$settings->batch} records ...");
+
+        if (!empty($settings->errortype)) {
+            $settings->errortype = explode(',', $settings->errortype);
+            $settings->errortype = array_map('intval', $settings->errortype);
+            list($insql, $inparams) = $DB->get_in_or_equal($settings->errortype, SQL_PARAMS_NAMED, 'errt');
+            $where[] = "x.errortype $insql";
+            $params = array_merge($params, $inparams);
+            mtrace('Applied scope for errortype ...');
+        }
+
+        if (!empty($settings->eventname)) {
+            $settings->eventname = explode(',', $settings->eventname);
+            list($insql, $inparams) = $DB->get_in_or_equal($settings->eventname, SQL_PARAMS_NAMED, 'evt');
+            $where[] = "x.eventname $insql";
+            $params = array_merge($params, $inparams);
+            mtrace('Applied scope for eventname ...');
+        }
+
+        if (!empty($settings->datefrom) && $settings->datefrom !== false) {
+            $where[] = 'x.timecreated >= :datefrom';
+            $params['datefrom'] = $settings->datefrom;
+            mtrace('Applied scope for datefrom ...');
+        }
+
+        if (!empty($settings->dateto) && $settings->dateto !== false) {
+            $where[] = 'x.timecreated <= :dateto';
+            $params['dateto'] = $settings->dateto;
+            mtrace('Applied scope for dateto ...');
+        }
+
+        if (!empty($settings->datefrom) && !empty($settings->dateto)) {
+            if ($settings->datefrom > $settings->dateto) {
+                mtrace(get_string('datetovalidation', 'logstore_xapi'));
+                exit(2);
+            }
+        }
+
+        if (empty($where)) {
+            $where[] = '1 = 1';
+            mtrace('No scope applied, moving all records ...');
+        }
+
+        $where = implode(' AND ', $where);
+
+        $sql = "SELECT x.id
+                FROM {{$basetable}} x
+                WHERE $where
+            ORDER BY x.id";
+
+        $limitfrom = 0;
+        $limitnum = $settings->batch;
+        $counttotal = 0;
+        $countsucc = 0;
+        $countfail = 0;
+
+        do {
+            if (microtime(true) - $starttime >= $settings->runtime) {
+                mtrace("Stopping the task, the maximum runtime has been exceeded ({$settings->runtime} seconds).");
+                break; // Exit the loop after the specified runtime
+            }
+
+            mtrace("Reading at offset {$limitfrom} ...", ' ');
+            $records = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
+            $count = count($records);
+            $counttotal += $count;
+            mtrace("read {$count} records.");
+
+            $eventids = array_keys($records);
+
+            if (empty($eventids)) {
+                break;
+            }
+
+            $mover = new \logstore_xapi\log\moveback($eventids, XAPI_REPORT_ID_ERROR);
+
+            if ($mover->execute()) {
+                $countsucc += $count;
+                mtrace("$count events successfully sent for reprocessing. Not increasing the offset (records were moved).");
+            } else {
+                $limitfrom += $count; // Increase the offset, when failed to move.
+                $countfail += $count;
+                mtrace("$count events failed to send for reprocessing. Increasing the offset by {$count} (records were not moved).");
+            }
+        } while ($count > 0);
+
+        mtrace("Total of {$counttotal} records matched the scope.");
+        mtrace("Total of {$countsucc} events successfully sent for reprocessing.");
+        mtrace("Total of {$countfail} events failed to send for reprocessing.");
     }
 }
