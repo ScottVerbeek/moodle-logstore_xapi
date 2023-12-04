@@ -55,6 +55,15 @@ $tasks = array(
         'month' => '*'
     ),
     array(
+        'classname' => '\logstore_xapi\task\resend_task',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '18',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+    array(
         'classname' => '\logstore_xapi\task\sendfailednotifications_task',
         'blocking' => 0,
         'minute' => '*',

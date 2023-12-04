@@ -69,7 +69,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configcheckbox('logstore_xapi/mbox',
         get_string('mbox', 'logstore_xapi'),
         get_string('mbox_desc', 'logstore_xapi'), 0));
-		
+
 	// optional hashing of email address
     $settings->add(new admin_setting_configcheckbox('logstore_xapi/hashmbox',
         get_string('hashmbox', 'logstore_xapi'),
@@ -86,7 +86,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configcheckbox('logstore_xapi/send_username',
         get_string('send_username', 'logstore_xapi'),
         get_string('send_username_desc', 'logstore_xapi'), 0));
-		
+
 	$settings->add(new admin_setting_configcheckbox('logstore_xapi/send_name',
         get_string('send_name', 'logstore_xapi'),
         get_string('send_name_desc', 'logstore_xapi'), 1));
@@ -153,6 +153,54 @@ if ($hassiteconfig) {
 
     $settings->add(new admin_setting_configmulticheckbox('logstore_xapi/routes',
         get_string('routes', 'logstore_xapi'), '', $menuroutes, $menuroutes));
+
+    // Resend in background task.
+    $settings->add(new admin_setting_heading('resendtask',
+        get_string('resendtask', 'logstore_xapi'),
+        get_string('resendtask_help', 'logstore_xapi')));
+
+    $settings->add(new admin_setting_configduration('logstore_xapi/resendtaskruntime',
+        get_string('resendtaskruntime', 'logstore_xapi'),
+        get_string('resendtaskruntime_help', 'logstore_xapi'),
+        get_config('core', 'task_scheduled_max_runtime'),
+        PARAM_INT
+    ));
+
+    $settings->add(new admin_setting_configtext('logstore_xapi/resendtaskerrortype',
+        get_string('resendtaskerrortype', 'logstore_xapi'),
+        get_string('resendtaskerrortype_help', 'logstore_xapi'),
+        '',
+        PARAM_TEXT
+    ));
+
+    $settings->add(new admin_setting_configtextarea('logstore_xapi/resendeventname',
+        get_string('resendeventname', 'logstore_xapi'),
+        get_string('resendeventname_help', 'logstore_xapi'),
+        '',
+        PARAM_TEXT
+    ));
+
+    $settings->add(new admin_setting_configtext('logstore_xapi/resenddatefrom',
+        get_string('resenddatefrom', 'logstore_xapi'),
+        get_string('resenddatefrom_help', 'logstore_xapi'),
+        '',
+        PARAM_INT
+    ));
+
+    $settings->add(new admin_setting_configtext('logstore_xapi/resenddateto',
+        get_string('resenddateto', 'logstore_xapi'),
+        get_string('resenddateto_help', 'logstore_xapi'),
+        '',
+        PARAM_INT
+    ));
+
+    $settings->add(new admin_setting_configtext('logstore_xapi/resendbatch',
+        get_string('resendbatch', 'logstore_xapi'),
+        get_string('resendbatch_help', 'logstore_xapi'),
+        12500,
+        PARAM_INT
+    ));
+
 
     $PAGE->requires->js_call_amd('logstore_xapi/settings', 'init');
 
