@@ -186,7 +186,7 @@ function get_event_function_map() {
          * which will cause the core_event_deprecated_testcase to fail
          * (debugging already called and the debug mode is off - list_generator.php)
          **/
-        $environmentevents = $availableevents;
+        $environmentevents = array_keys($availableevents);
 
     } else {
         $environmentevents = class_exists("report_eventlist_list_generator") ?
