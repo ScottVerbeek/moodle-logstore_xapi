@@ -41,7 +41,12 @@ class admin_setting_userselection extends \admin_setting {
      * @return array The ids of the currently selected users.
      */
     public function get_setting() {
-        return explode(',', $this->config_read($this->name));
+        $setting = $this->config_read($this->name);
+        if (!$setting) {
+            return [];
+        }
+
+        return explode(',', $setting);
     }
 
     /**
