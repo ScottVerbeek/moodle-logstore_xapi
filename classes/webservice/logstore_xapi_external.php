@@ -63,9 +63,10 @@ class logstore_xapi_external extends external_api {
 
         $results = array();
         // Add also extra user fields.
+        $userfields = \core_user\fields::for_identity($usercontext, false)->get_required_fields();
         $requiredfields = array_merge(
             ['id', 'fullname'],
-            get_extra_user_fields($usercontext)
+            $userfields
         );
 
         foreach ($users['users'] as $id => $user) {
@@ -114,8 +115,8 @@ class logstore_xapi_external extends external_api {
         $params = array('guestid' => $CFG->siteguest);
         $usercontext = context_user::instance($USER->id);
         if (!empty($search)) {
-            $conditions = get_extra_user_fields($usercontext);
-            foreach (get_all_user_name_fields() as $field) {
+            $conditions = \core_user\fields::for_identity($usercontext, false)->get_required_fields();
+            foreach (\core_user\fields::get_name_fields() as $field) {
                 $conditions[] = 'u.'.$field;
             }
             $conditions[] = $DB->sql_fullname('u.firstname', 'u.lastname');

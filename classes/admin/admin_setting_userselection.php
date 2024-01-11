@@ -54,12 +54,13 @@ class admin_setting_userselection extends \admin_setting {
     public function output_html($data, $query='') {
         global $CFG, $OUTPUT, $USER;
         $context = \context_user::instance($USER->id);
+        $fields = \core_user\fields::for_identity($context, false)->get_required_fields();
         $selected = $this->get_setting();
         $options = array(
             'ajax' => 'logstore_xapi/userselection',
             'multiple' => true,
             'perpage' => $CFG->maxusersperpage,
-            'userfields' => implode(',', get_extra_user_fields($context)),
+            'userfields' => implode(',', $fields),
             'valuehtmlcallback' => function($value) {
                 global $DB, $OUTPUT;
                     $user = $DB->get_record('user', ['id' => (int)$value], '*', IGNORE_MISSING);
